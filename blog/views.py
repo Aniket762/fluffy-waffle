@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Post
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView , CreateView
 #list view gives the youTube wala feel
 
 def home(request):
@@ -22,7 +22,16 @@ class PostViewList(ListView):
 # taki har ek post k lia ek page ban jai, url mei khelna hai 
 class PostDetailView(DetailView):
     model = Post
-    
+
+class PostCreateView(CreateView):
+    model = Post
+    fields= ['title','content']
+    #fields that you want to change
+
+    # setting the author of the post as the current logged in user
+    def form_valid(self,form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 def about(request):
