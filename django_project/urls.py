@@ -34,6 +34,10 @@ urlpatterns = [
         auth_views.PasswordResetConfirmView.as_view(template_name = 'users/password_reset_confirm.html'),
         name="password_reset_confirm"),
     #1st redirect after password change
+
+    # password reset hone k badh yea redirect hoga
+    path('password-reset-complete',auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),name='password_reset_complete'),
+
 ]
 
 if settings.DEBUG:

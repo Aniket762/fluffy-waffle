@@ -130,3 +130,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'blog-home'
 
 LOGIN_URL = 'login'  #confused
+
+# gmail server using here for sending mail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+HOST_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environment.get('EMAIL_USER')  # Email_User contains email as env var
+EMAIL_HOST_PASSWORD= os.environment.get('EMAIL_PASS') # EMAIL_PASS contains pass as env var
