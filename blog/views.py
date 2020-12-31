@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, DetailView , CreateView
+from django.views.generic import ListView, DetailView , CreateView, DeleteView
 #list view gives the youTube wala feel
 
 def home(request):
@@ -49,6 +49,17 @@ class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     
     # only wirter of the post can edit it
     # else 403 error
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+
+
+# delete krne k lia post
+class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = Post
+    success_url = '/'
     def test_func(self):
         post = self.get_object()
         if self.request.user == post.author:
