@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Post
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView , CreateView
 #list view gives the youTube wala feel
 
@@ -37,7 +37,7 @@ class PostCreateView(LoginRequiredMixin , CreateView):
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin , UpdateView):
+class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Post
     fields= ['title','content']
     #fields that you want to change
@@ -46,6 +46,14 @@ class PostUpdateView(LoginRequiredMixin , UpdateView):
     def form_valid(self,form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+    
+    # only wirter of the post can edit it
+    # else 403 error
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
 
 
 def about(request):
